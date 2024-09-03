@@ -21,6 +21,7 @@ You have to implement the following conversions:
 
 
 
+
 Bonus list:
 • Manage any combination of the following flags: ’-0.’ and the field minimum width under all conversions.
 • Manage all the following flags: ’# +’ (Yes, one of them is a space)
@@ -42,7 +43,6 @@ Bonus Rules:
 "-" flag:
 	Left justify content (OVERRIDES "0" FLAG). Requires Minimum Width.
 		(Bonus says this should apply to all conversions?)
-
 
 "." ???:
 	Precision? I have no idea why this is included if we do not have any decimal places????
