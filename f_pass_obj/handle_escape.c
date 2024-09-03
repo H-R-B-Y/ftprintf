@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:25:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/02 20:28:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/03 17:23:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*pop_escaped_str(char **str)
 	while (**str && ft_strchr("+ .-0'#", **str))
 		(*str)++;
 	if (**str && ft_strchr("123456789", **str) && (*str)++)
-		while (**str && ft_strchr("123456789", **str))
+		while (**str && ft_strchr("0123456789", **str))
 			(*str)++;
 	if (**str && !ft_strchr("cspdiuxX", **str))
 		return (0);
@@ -82,10 +82,10 @@ conv_t *parse_width(conv_t *c)
 		start++;
 	if (!ft_strchr("123456789", *start))
 		return (0);
-	end = start;
-	while (*end && ft_strchr("123456789", *end))
+	end = start + 1;
+	while (*end && ft_strchr("0123456789", *end))
 		end++;
-	dupe = ft_substr(start, 0, (end - start) - 1);
+	dupe = ft_substr(start, 0, (end - start));
 	c->min_width = ft_atoi(dupe);
 	free(dupe);
 	return (c);
@@ -145,4 +145,5 @@ conv_t *print_escaped_argument(conv_t *c)
 	else if (c->type == 'p')
 		str = "ptr";
 	ft_putstr_fd(str, 1);
+	return (c);
 }
