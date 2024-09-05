@@ -49,11 +49,13 @@ Bonus Rules:
 		(Bonus says this should apply to all conversions?)
 
 "." ???:
-	Precision? I have no idea why this is included if we do not have any decimal places????
+	Precision, OVERRIDES 0 TAKES PRECIDENCE OVER WIDTH.
+	Does not apply to null values?
 
 " " flag:
 	Add a single space before a positive number produced by a signed conversion.
 	Behaviour for unsigned conversions??? (Please test).
+	0 precision return NOTHING for == 0 values!!!
 
 "+" flag:
 	Add a single "+" sign before a positive number produced by a signed conversion.
