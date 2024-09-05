@@ -1,6 +1,6 @@
 CC			= cc
 CFLAGS		= -Wall -Wextra -Werror -g -O0
-SRC			= conv_factory.c flag_functions.c handle_escape.c string_generation.c ft_printf.c
+SRC			= conv_factory.c flag_functions.c handle_escape.c string_generation.c ft_printf.c bitflags.c
 OBJ			= $(SRC:.c=.o)
 EXT			= libft/libft.a
 NAME		= test.a

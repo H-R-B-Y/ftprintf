@@ -39,6 +39,10 @@ Bonus Rules:
 "0" flag:
 	Left pad with 0's. Requires Minimum Width.
 		(Bonus says this should apply to all conversions?)
+			If  a  precision  is  given
+			with  a numeric conversion (d, i, o, u, x, and X), the 0 flag is
+			ignored.  For other conversions, the behavior is undefined.
+
 
 "-" flag:
 	Left justify content (OVERRIDES "0" FLAG). Requires Minimum Width.
@@ -53,3 +57,4 @@ Bonus Rules:
 
 "+" flag:
 	Add a single "+" sign before a positive number produced by a signed conversion.
+		OVERRIDES " " FLAG IF PRESENT!!!!!!

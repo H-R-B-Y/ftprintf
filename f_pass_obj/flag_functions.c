@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:29:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/03 17:31:16 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:24:42 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char *create_padding(conv_t *c)
 	if (!padding)
 		return ft_strdup("");
 	padding[pad_count] = '\0';
-	if (c->zro_f && !c->min_f)
+	if (test_flag(c, zro_f) && !test_flag(c, min_f))
 		ft_memset(padding, '0', pad_count);
 	else
 		ft_memset(padding, ' ', pad_count);
@@ -38,9 +38,9 @@ conv_t *padding(conv_t *c)
 	if (!c || !c->min_width || ft_strlen(c->output) + ft_strlen(c->prefix) >= c->min_width)
 		return (c);
 	padding = create_padding(c);
-	if (c->min_f)
+	if (test_flag(c, min_f))
 		result = ft_strjoin(c->output, padding);
-	else if (c->zro_f)
+	else if (test_flag(c, zro_f))
 		result = ft_strjoin(padding, c->output);
 	else 
 	{
@@ -64,12 +64,12 @@ conv_t *set_prefix(conv_t *c)
 	{
 		if (c->is_negative)
 			c->prefix = ft_strdup("-");
-		else if (c->add_f && !c->spc_f) // add overrides space 
+		else if (test_flag(c, add_f) && !test_flag(c, spc_f)) // add overrides space 
 			c->prefix = ft_strdup("+");
-		else if (c->spc_f)
+		else if (test_flag(c, spc_f))
 			c->prefix = ft_strdup(" ");
 	}
-	if (((c->type == 'x' || c->type == 'X') && c->hsh_f) || c->type == 'p')
+	if (((ft_strchr("Xx", c->type) && test_flag(c, hsh_f)) && *((int *)c->value) != 0) || c->type == 'p' )
 	{
 		if (c->prefix)
 		{

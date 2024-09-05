@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/03 18:11:56 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:19:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,15 @@ conv_t	*generate_conversion(char *str, void *value)
 	if (!str)
 		return (0);
 	output = malloc(sizeof(conv_t));
-	output->hsh_f = 0;
-	output->qot_f = 0;
-	output->zro_f = 0;
-	output->min_f = 0;
-	output->dot_f = 0;
-	output->spc_f = 0;
-	output->add_f = 0;
+	output->flags = non_f;
 	output->control = str;
 	output->value = value;
 	output->output = 0;
 	output->prefix = 0;
 	output->type = str[ft_strlen(str)-1];
 	output->is_negative = check_signed_value(value);
+	output->min_width = 0;
+	output->precision = 0;
 	return (output);
 }
 

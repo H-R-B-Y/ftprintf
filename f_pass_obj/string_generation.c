@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:42:27 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/03 18:43:39 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:41:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,27 @@ char *ptr_to_hex(unsigned long *ptr)
 	return (0);
 }
 
+conv_t *prepend_precision(conv_t *c)
+{
+	size_t	pad_count;
+	char	*padding;
+	char	*temp;
+
+	if (!c || !c->value || !c->precision || !c->output)
+		return (0);
+	if (ft_strlen(c->output) >= c->precision)
+		return (c);
+	pad_count = c->precision - ft_strlen(c->output);
+	padding = malloc(pad_count + 1);
+	padding[pad_count] = '\0';
+	ft_memset(padding, '0', pad_count);
+	temp = ft_strjoin(padding, c->output);
+	free(c->output);
+	free(padding);
+	c->output = temp;
+	return (c);
+}
+
 conv_t *generate_output(conv_t *c)
 {
 	if (!c || !c->value)
@@ -59,5 +80,7 @@ conv_t *generate_output(conv_t *c)
 	}
 	else if (c->type == 's')
 		c->output = ft_strdup(c->value);
+	if (c->precision && ft_strchr("diuxXp", c->type))
+		prepend_precision(c);
 	return (c);
 }

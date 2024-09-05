@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/03 18:16:10 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 14:50:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,12 @@ int validate_input_str(const char *str)
 		if (*str == '%' && *(str + 1))
 		{
 			str++;
-			while (*str && ft_strchr("+ .-0'#", *str))
+			while (*str && ft_strchr("+ -0'#", *str))
 				str++;
 			if (*str && ft_strchr("123456789", *str))
+				while (*str && ft_strchr("1234567890", *str))
+					str++;
+			if (*str && *str == '.' && ++str)
 				while (*str && ft_strchr("1234567890", *str))
 					str++;
 			if (*str && !ft_strchr("cspdiuxX", *str))
@@ -78,7 +81,6 @@ int	ft_printf (const char *str, ...)
 			if (!conversion)
 				return (-1);
 			set_conversion_flags(conversion);
-			parse_width(conversion);
 			generate_output(conversion);
 			set_prefix(conversion);
 			padding(conversion);
