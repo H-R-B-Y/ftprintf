@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:43:58 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/05 22:21:31 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/06 02:28:52 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int main ()
 	printf("Number with precision and width and 0 flag:\n%015.10d\n", 7);
 	printf("Hex without 0 and alt form:\n%#x\n", 1);
 	printf("Space is present:\n% .10d\n", 10);
-	printf("PTR with precision:\n%.10p\n", "Hello");
+	printf("PTR with precision:\n%.20p\n", "Hello");
 	
 	fflush(stdout);
 	ft_printf("\n\nTime to test mine\n\n\n");
@@ -47,5 +47,7 @@ int main ()
 	ft_printf("Number with precision and width and 0 flag:\n%015.10d\n", 7);
 	ft_printf("Hex without 0 and alt form:\n%#x\n", 1);
 	ft_printf("Space is present:\n% .10d\n", 10);
-	ft_printf("PTR with precision:\n%.10p\n", "Hello");
+	ft_printf("PTR with precision:\n%.20p\n", "Hello");
+
+	printf("\n\n\n\n%.50s\n\n\n", "text");
 }

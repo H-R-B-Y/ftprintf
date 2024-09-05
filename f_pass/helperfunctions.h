@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/01 20:07:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/06 02:19:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct conv_s
 	char *control;
 	ssize_t min_width;
 	char *output;
-}	conv_t
+}	t_conv
 
 
 
