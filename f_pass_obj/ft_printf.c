@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/05 14:50:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 17:04:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int validate_input_str(const char *str)
 	return (1);
 }
 
-static void *consume_arg(va_list args, char s)
+static void *pop_arg(va_list args, char s)
 {
 	int *int_result;
 	char *char_result;
@@ -76,11 +76,14 @@ int	ft_printf (const char *str, ...)
 		if (*str == '%')
 		{
 			esc = pop_escaped_str((char **)&str);
-			val = consume_arg(args, (char)*(str-1));
+			val = pop_arg(args, (char)*(str-1));
 			conversion = generate_conversion(esc, val);
 			if (!conversion)
 				return (-1);
 			set_conversion_flags(conversion);
+			parse_width(conversion, args);
+			parse_precision(conversion, args);
+			correct_flags(conversion);
 			generate_output(conversion);
 			set_prefix(conversion);
 			padding(conversion);

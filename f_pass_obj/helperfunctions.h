@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/05 14:23:43 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 22:15:43 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "libft/libft.h"
 # include <stdarg.h>
 # include <stdlib.h>
-
 
 typedef enum
 {
@@ -110,10 +109,13 @@ char	*pop_escaped_str(char **str);
 conv_t	*set_conversion_flags(conv_t *c);
 
 // Returns: the conversion struct
-conv_t	*parse_width(conv_t *c);
+conv_t	*parse_width(conv_t *c, va_list args);
 
 // Returns: the conversion struct
-conv_t	*parse_precision(conv_t *c);
+conv_t	*parse_precision(conv_t *c, va_list args);
+
+// Returns: the conversion struct
+conv_t	*correct_flags(conv_t *c);
 
 conv_t	*padding(conv_t *c);
 conv_t	*set_prefix(conv_t *c);
@@ -121,7 +123,7 @@ conv_t	*set_prefix(conv_t *c);
 // Do something here
 char	*int_to_str(int *v);
 char	*int_to_hex(int *v);
-char	*ptr_to_hex(unsigned long *v);
+char	*ptr_to_hex(void *v);
 
 conv_t	*generate_output(conv_t *c);
 

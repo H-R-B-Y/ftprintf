@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:42:27 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/05 14:41:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/05 22:35:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ char *int_to_hex(int *v)
 	return str;
 }
 
-char *ptr_to_hex(unsigned long *ptr)
+char	*ptr_to_hex(void *ptr)
 {
-	*ptr = 0;
-	return (0);
+	if (!ptr)
+		return (ft_strdup("(nil)"));
+	(void)ptr;
+	return (ft_strdup("HEX"));
 }
 
 conv_t *prepend_precision(conv_t *c)
@@ -79,7 +81,10 @@ conv_t *generate_output(conv_t *c)
 		c->output[0] = *(char *)(c->value);
 	}
 	else if (c->type == 's')
+	{
 		c->output = ft_strdup(c->value);
+		if (c->output == 0)
+	}
 	if (c->precision && ft_strchr("diuxXp", c->type))
 		prepend_precision(c);
 	return (c);
