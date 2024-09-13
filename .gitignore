@@ -1,2 +1,7 @@
 .vscode
 .vscode/*
+*.o
+*.a
+quicktest
+testing
+testing/*s
