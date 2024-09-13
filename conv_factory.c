@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 16:59:17 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 20:10:07 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,13 @@ t_conv	*generate_conversion(char *str, void *value)
 
 	if (!str)
 		return (0);
-	output = malloc(sizeof(t_conv));
+	output = zeroit(malloc(sizeof(t_conv)), sizeof(t_conv));
 	output->flags = non_f;
 	output->control = str;
 	output->value = value;
-	output->output = 0;
-	output->prefix = 0;
 	output->type = str[ft_strlen(str)-1];
 	if (ft_strchr("di", output->type))
 		output->is_negative = check_signed_value(value);
-	else
-		output->is_negative = 0;
-	output->min_width = 0;
-	output->precision = 0;
 	return (output);
 }
 
@@ -69,15 +63,15 @@ size_t	printed_length(t_conv *c)
 	size_t	output;
 	
 	output = ft_strlen(c->prefix) + ft_strlen(c->output);
-	if (!output && c->type == 'c')
-		output = 1;
+	if (c->type == 'c' && *(char *)c->value == '\0')
+		output += 1;
 	return (output);
 }
 
 void	print_conversion(t_conv *c)
 {
 	ft_putstr_fd(c->prefix, 1);
-	ft_putstr_fd(c->output, 1);
-	if (*c->output == '\0' && c->type == 'c')
+	if (c->type == 'c' && *((char *)c->value) == '\0')
 		write(1, "\0", 1);
+	ft_putstr_fd(c->output, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:29:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 17:33:44 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 18:39:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_conv	*padding(t_conv *c)
 
 	if (!c || !c->min_width
 		|| ft_strlen(c->output) + ft_strlen(c->prefix) >= c->min_width
+		|| (c->type == 'c' && *(char *)c->value == '\0' && c->min_width < 1)
 	)
 		return (c);
 	padding = create_padding(c);
@@ -89,7 +90,7 @@ t_conv	*correct_flags(t_conv *c)
 {
 	if (!c || !c->flags)
 		return (0);
-	if (test_flag(c, zro_f) && c->precision)
+	if (test_flag(c, zro_f) && test_flag(c, dot_f))
 		unset_flag(c, zro_f);
 	if (test_flag(c, add_f) && test_flag(c, spc_f))
 		unset_flag(c, spc_f);

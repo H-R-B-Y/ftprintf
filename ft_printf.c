@@ -6,42 +6,42 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 16:58:55 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 20:11:36 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	validate_input_str(const char *str)
-{
-	while (*str)
-	{
-		if (*str == '%' && *(str + 1) != '%')
-		{
-			str++;
-			while (*str && ft_strchr("+ -0'#", *str))
-				str++;
-			if (*str && ft_strchr("123456789", *str))
-				while (*str && ft_strchr("1234567890", *str))
-					str++;
-			if (*str && *str == '*')
-				str++;
-			if (*str && *str == '.' && ++str)
-				while (*str && ft_strchr("1234567890", *str))
-					str++;
-			if (*str && *(str - 1) == '.' && *str == '*')
-				str++;
-			if (*str && !ft_strchr("cspdiuxX", *str))
-				return (0);
-		}
-		else if (*str == '%' && !*(str + 1))
-			return (0);
-		else if (*str == '%' && *(str + 1) == '%')
-			str++;
-		str++;
-	}
-	return (1);
-}
+// int	validate_input_str(const char *str)
+// {
+// 	while (*str)
+// 	{
+// 		if (*str == '%' && *(str + 1) != '%')
+// 		{
+// 			str++;
+// 			while (*str && ft_strchr("+ -0'#", *str))
+// 				str++;
+// 			if (*str && ft_strchr("123456789", *str))
+// 				while (*str && ft_strchr("1234567890", *str))
+// 					str++;
+// 			if (*str && *str == '*')
+// 				str++;
+// 			if (*str && *str == '.' && ++str)
+// 				while (*str && ft_strchr("1234567890", *str))
+// 					str++;
+// 			if (*str && *(str - 1) == '.' && *str == '*')
+// 				str++;
+// 			if (*str && !ft_strchr("cspdiuxX", *str))
+// 				return (0);
+// 		}
+// 		else if (*str == '%' && !*(str + 1))
+// 			return (0);
+// 		else if (*str == '%' && *(str + 1) == '%')
+// 			str++;
+// 		str++;
+// 	}
+// 	return (1);
+// }
 
 static void	*pop_arg(va_list args, char s)
 {
@@ -82,21 +82,23 @@ int	ft_printf(const char *str, ...)
 	char	*esc;
 	unsigned long long len;
 
-	if (!validate_input_str(str))
-		return (-1);
+	// if (!validate_input_str(str))
+	// 	return (-1);
 	len = 0;
 	va_start(args, str);
 	while (*str)
 	{
 		if (*str == '%')
 		{
-			if (*(str + 1) == '%' && ++len)
+			if (!*(str + 1) && ++len)
 			{
 				ft_putchar_fd('%', 1);
-				str += 2;
+				str += 1;
 				continue ;
 			}
 			esc = pop_escaped_str((char **)&str);
+			if (!esc)
+				continue ;
 			val = pop_arg(args, (char)*(str-1));
 			conversion = generate_conversion(esc, val);
 			if (!conversion)
@@ -106,7 +108,10 @@ int	ft_printf(const char *str, ...)
 			parse_precision(conversion, args);
 			correct_flags(conversion);
 			generate_output(conversion);
-			padding(set_prefix(conversion));
+			if (conversion->type != '%')
+			{
+				padding(set_prefix(conversion));
+			}
 			print_conversion(conversion);
 			len += printed_length(conversion);
 			delete_conversion(conversion);

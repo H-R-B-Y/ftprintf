@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:43:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 17:32:32 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 21:03:26 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	destroy(void *ptr)
 	return ;
 }
 
-void to_upper_wrapper(unsigned int x, char *c)
+void	to_upper_wrapper(unsigned int x, char *c)
 {
 	(void)x;
 	*c = ft_toupper(*c);
@@ -37,12 +37,26 @@ char	*str_join_and_free(char *s1, char *s2, unsigned int t)
 	return (output);
 }
 
+
+void	*zeroit(void *ptr, size_t n)
+{
+	size_t	index;
+
+	if (!ptr)
+		return (0);
+	index = 0;
+	while (index < n)
+		((unsigned char *) ptr)[index++] = (unsigned char ) '\0';
+	return (ptr);
+}
+
 char	*create_padding(t_conv *c)
 {
 	char	*padding;
 	size_t	pad_count;
 
 	pad_count = c->min_width - (ft_strlen(c->output) + ft_strlen(c->prefix));
+	pad_count -= (c->type == 'c' && *(char *)c->value == '\0');
 	if (!pad_count)
 		return (ft_strdup(""));
 	padding = malloc(pad_count + 1);
