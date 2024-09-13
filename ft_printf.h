@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:21:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:33:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@
 typedef enum escflags_e
 {
 	non_f		= 0,
-	hsh_f		= (1 << 1),
-	qot_f		= (1 << 2),
-	zro_f		= (1 << 3),
-	min_f		= (1 << 4),
-	dot_f		= (1 << 5),
-	spc_f		= (1 << 6),
-	add_f		= (1 << 7)
+	hsh_f		= (1 << 0),
+	qot_f		= (1 << 1),
+	zro_f		= (1 << 2),
+	min_f		= (1 << 3), 
+	dot_f		= (1 << 4),
+	spc_f		= (1 << 5),
+	add_f		= (1 << 6)
 }				t_escflags;
 
 typedef struct conv_s
@@ -65,6 +65,11 @@ t_conv	*generate_conversion(char *str, void *value);
 // Returns: Nothing lol
 void	delete_conversion(t_conv *c);
 
+// Returns: the size of the printed conversion.
+size_t	printed_length(t_conv *c);
+
+void	print_conversion(t_conv *c);
+
 // Returns: a malloc'd copy of the escaped string from
 // 	a formated string. str must point to the address 
 // 	of the escape character. str will be fast forwarded to
@@ -88,8 +93,9 @@ t_conv	*set_prefix(t_conv *c);
 
 // Conversion Functions.
 char	*int_to_str(int *v);
-char	*int_to_hex(int *v);
+char	*uint_to_hex(unsigned *v);
 char	*ptr_to_hex(void *v);
+char	*uint_to_str(unsigned *v);
 
 t_conv	*generate_output(t_conv *c);
 
@@ -97,5 +103,9 @@ t_conv	*generate_output(t_conv *c);
 char	*create_padding(t_conv *c);
 char	*str_join_and_free(char *s1, char *s2, unsigned int t);
 void	substr_atoi(char *str, size_t *value);
+void	destroy(void *ptr);
+void	to_upper_wrapper(unsigned int x, char *c);
+
+int		ft_printf(const char *str, ...);
 
 #endif

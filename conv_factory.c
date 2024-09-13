@@ -6,11 +6,12 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:27:25 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:59:17 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <unistd.h>
 
 static int	check_signed_value(void *value)
 {
@@ -35,7 +36,7 @@ t_conv	*generate_conversion(char *str, void *value)
 	output->output = 0;
 	output->prefix = 0;
 	output->type = str[ft_strlen(str)-1];
-	if (ft_strchr("xXdi", output->type))
+	if (ft_strchr("di", output->type))
 		output->is_negative = check_signed_value(value);
 	else
 		output->is_negative = 0;
@@ -49,14 +50,34 @@ void	delete_conversion(t_conv *c)
 {
 	if (!c)
 		return ;
-	if (ft_strchr("dixXc", c->type))
-		free(c->value);
+	// Value is not always a malloc'd value!
+	// This may need to be updated if anything else gets malloc'd
+	if (ft_strchr("dixXcu", c->type))
+		destroy(c->value);
 	if (c->control)
-		free(c->control);
+		destroy(c->control);
 	if (c->output)
-		free(c->output);
+		destroy(c->output);
 	if (c->prefix)
-		free(c->prefix);
-	free(c);
+		destroy(c->prefix);
+	destroy(c);
 	return ;
+}
+
+size_t	printed_length(t_conv *c)
+{
+	size_t	output;
+	
+	output = ft_strlen(c->prefix) + ft_strlen(c->output);
+	if (!output && c->type == 'c')
+		output = 1;
+	return (output);
+}
+
+void	print_conversion(t_conv *c)
+{
+	ft_putstr_fd(c->prefix, 1);
+	ft_putstr_fd(c->output, 1);
+	if (*c->output == '\0' && c->type == 'c')
+		write(1, "\0", 1);
 }

@@ -6,11 +6,24 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:43:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:19:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:32:32 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+void	destroy(void *ptr)
+{
+	free(ptr);
+	ptr = 0;
+	return ;
+}
+
+void to_upper_wrapper(unsigned int x, char *c)
+{
+	(void)x;
+	*c = ft_toupper(*c);
+}
 
 char	*str_join_and_free(char *s1, char *s2, unsigned int t)
 {
@@ -18,9 +31,9 @@ char	*str_join_and_free(char *s1, char *s2, unsigned int t)
 
 	output = ft_strjoin(s1, s2);
 	if ((t & (1 << 1)) == (1 << 1))
-		free(s1);
+		destroy(s1);
 	if ((t & (1 << 2)) == (1 << 2))
-		free(s2);
+		destroy(s2);
 	return (output);
 }
 
@@ -56,5 +69,7 @@ void	substr_atoi(char *str, size_t *value)
 		end++;
 	end = ft_substr(str, 0, end - str);
 	*value = (size_t)atoi(end);
-	free(end);
+	destroy(end);
 }
+
+

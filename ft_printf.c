@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:27:53 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 16:58:55 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	validate_input_str(const char *str)
 {
 	while (*str)
 	{
-		if (*str == '%' && *(str + 1))
+		if (*str == '%' && *(str + 1) != '%')
 		{
 			str++;
 			while (*str && ft_strchr("+ -0'#", *str))
@@ -36,6 +36,8 @@ int	validate_input_str(const char *str)
 		}
 		else if (*str == '%' && !*(str + 1))
 			return (0);
+		else if (*str == '%' && *(str + 1) == '%')
+			str++;
 		str++;
 	}
 	return (1);
@@ -62,6 +64,12 @@ static void	*pop_arg(va_list args, char s)
 		return (va_arg(args, void *));
 	else if (s == 's')
 		return (va_arg(args, char *));
+	else if (s == 'u')
+	{
+		int_result = malloc(sizeof(unsigned int));
+		*int_result = va_arg(args, unsigned int);
+		return (int_result);
+	}
 	return (0);
 }
 
@@ -72,15 +80,17 @@ int	ft_printf(const char *str, ...)
 	t_conv	*conversion;
 	void	*val;
 	char	*esc;
+	unsigned long long len;
 
 	if (!validate_input_str(str))
 		return (-1);
+	len = 0;
 	va_start(args, str);
 	while (*str)
 	{
 		if (*str == '%')
 		{
-			if (*(str + 1) == '%')
+			if (*(str + 1) == '%' && ++len)
 			{
 				ft_putchar_fd('%', 1);
 				str += 2;
@@ -93,17 +103,19 @@ int	ft_printf(const char *str, ...)
 				return (-1);
 			set_conversion_flags(conversion);
 			parse_width(conversion, args);
-			correct_flags(parse_precision(conversion, args));
-			padding(set_prefix(generate_output(conversion)));
-			ft_putstr_fd(conversion->prefix, 1);
-			ft_putstr_fd(conversion->output, 1);
+			parse_precision(conversion, args);
+			correct_flags(conversion);
+			generate_output(conversion);
+			padding(set_prefix(conversion));
+			print_conversion(conversion);
+			len += printed_length(conversion);
 			delete_conversion(conversion);
 			continue ;
 		}
-		else 
+		else if (++len)
 			ft_putchar_fd(*str, 1);
 		str++;
 	}
 	va_end(args);
-	return (0);
+	return (len);
 }

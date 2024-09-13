@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 20:29:30 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:19:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:33:44 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_conv	*set_prefix(t_conv *c)
 		|| c->type == 'p'
 	)
 		c->prefix = str_join_and_free(c->prefix, "0x", (1 << 1));
+	if (c->type == 'X')
+		ft_striteri(c->prefix, &to_upper_wrapper);
 	if (!ft_strchr("dixXp", c->type))
 		return (c);
 	if (c->is_negative)

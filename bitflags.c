@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:05:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:19:33 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/11 15:09:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	set_flag(t_conv *c, t_escflags flag)
 	c->flags |= flag;
 }
 
-// flip bits to create bit mask, then and operate to unset
 void	unset_flag(t_conv *c, t_escflags flag)
+// this funtion does this...
+// flip bits to create bit mask, then and operate to unset
 {
 	c->flags &= ~(int)flag;
 }

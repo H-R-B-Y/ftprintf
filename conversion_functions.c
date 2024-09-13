@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:36:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/06 02:16:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/13 17:20:30 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,54 @@ char	*int_to_str(int *v)
 	if (str[0] == '-')
 	{
 		tmp = ft_substr(str, 1, ft_strlen(str) - 1);
-		free(str);
+		destroy(str);
 		str = tmp;
 	}
 	return (str);
 }
 
-static size_t	digits_needed(long long n, int base)
+static size_t	digits_needed(unsigned long n, int base)
 {
-	long	digits;
-	int		i;
+	size_t	i;
 
-	digits = 1;
-	i = 0;
-	while (digits <= n)
+	i = 1;
+	while (n / base > 0)
 	{
-		digits *= base;
+		n /= base;
 		i++;
 	}
-	return (i + !(n));
+	return (i);
 }
 
-char	*int_to_hex(int *v)
+char *uint_to_str(unsigned int *v)
 {
-	char	*output;
-	long	num;
+	char	*str;
 	size_t	digits;
+	unsigned int num;
 
-	num = (long)*v;
+	if (!v)
+		return (ft_strdup(""));
+	num = *v;
+	digits = digits_needed(num, 10);
+	str = malloc(digits + 1);
+	str[digits] = '\0';
+	if (!str)
+		return (0);
+	while (digits)
+	{
+		str[--digits] = '0' + (num % 10);
+		num /= 10;
+	}
+	return (str);
+}
+
+char	*uint_to_hex(unsigned *v)
+{
+	char			*output;
+	unsigned long	num;
+	size_t			digits;
+
+	num = (unsigned long)*v;
 	if (num < 0)
 		num *= -1;
 	digits = digits_needed(num, 16);
