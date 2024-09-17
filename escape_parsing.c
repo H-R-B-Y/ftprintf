@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:25:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 16:48:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 17:26:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_conv	*parse_width(t_conv *c, va_list args)
 	while (*start && ft_strchr("+ -0'#", *start))
 		start++;
 	if (!ft_strchr("123456789", *start))
-		return (0);
+		return (c);
 	if (*start != '*')
 		substr_atoi(start, &c->min_width);
 	else

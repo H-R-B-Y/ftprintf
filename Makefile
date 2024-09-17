@@ -9,6 +9,7 @@ SRC				= bitflags.c \
 				escape_parsing.c \
 				precision.c \
 				generators.c
+
 OBJ				= $(SRC:.c=.o)
 LIBFT_DIR		= libft
 LIBFT			= libft/libft.a
@@ -42,6 +43,8 @@ $(LIBFT):
 		
 		$(MAKE) --directory $(LIBFT_DIR)
 
+bonus:				$(NAME)
+
 # Clean
 clean:
 		
@@ -65,7 +68,6 @@ test:				quicktest
 		@$(TEST_DIR)/quicktest.out st | cat -A > $(TEST_DIR)/st_out
 		@diff $(TEST_DIR)/ft_out $(TEST_DIR)/st_out > $(TEST_DIR)/diff || exit 0
 
-bonus:				$(NAME)
 
 # Relink
 re:				fclean all

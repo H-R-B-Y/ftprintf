@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:05:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 16:45:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 18:11:22 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_conv	*set_conversion_flags(t_conv *c)
 
 t_conv	*correct_flags(t_conv *c)
 {
-	if (!c || !c->flags)
+	if (!c)
 		return (0);
 	if (test_flag(c->flags, zro_f) && test_flag(c->flags, dot_f))
 		unset_flag(&c->flags, zro_f);
