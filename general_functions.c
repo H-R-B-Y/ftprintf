@@ -6,18 +6,11 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:43:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 21:03:26 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:22:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-void	destroy(void *ptr)
-{
-	free(ptr);
-	ptr = 0;
-	return ;
-}
 
 void	to_upper_wrapper(unsigned int x, char *c)
 {
@@ -25,18 +18,30 @@ void	to_upper_wrapper(unsigned int x, char *c)
 	*c = ft_toupper(*c);
 }
 
-char	*str_join_and_free(char *s1, char *s2, unsigned int t)
+char	*str_join_and_free(char *s1, char *s2, unsigned int flag)
 {
 	char	*output;
+	size_t	size1;
+	size_t	size2;
+	size_t	index;
 
-	output = ft_strjoin(s1, s2);
-	if ((t & (1 << 1)) == (1 << 1))
-		destroy(s1);
-	if ((t & (1 << 2)) == (1 << 2))
-		destroy(s2);
+	size1 = ft_strlen(s1);
+	size2 = ft_strlen(s2);
+	index = 0;
+	output = 0;
+	if (size1 + size2 + 1 != 1)
+		output = zeroit(malloc(size1 + size2 + 1), (size1 + size2 + 1));
+	while (output && s1 && index < size1)
+		output[index++] = (char)*s1++;
+	index = 0;
+	while (output && s2 && index < size2)
+		output[size1 + index++] = (char)*s2++;
+	if ((flag & (1 << 1)) == (1 << 1))
+		free(s1 - size1);
+	if ((flag & (1 << 2)) == (1 << 2))
+		free(s2 - index);
 	return (output);
 }
-
 
 void	*zeroit(void *ptr, size_t n)
 {
@@ -63,7 +68,7 @@ char	*create_padding(t_conv *c)
 	if (!padding)
 		return (ft_strdup(""));
 	padding[pad_count] = '\0';
-	if (test_flag(c, zro_f) && !test_flag(c, min_f))
+	if (test_flag(c->flags, zro_f) && !test_flag(c->flags, min_f))
 		ft_memset(padding, '0', pad_count);
 	else
 		ft_memset(padding, ' ', pad_count);
@@ -83,7 +88,5 @@ void	substr_atoi(char *str, size_t *value)
 		end++;
 	end = ft_substr(str, 0, end - str);
 	*value = (size_t)atoi(end);
-	destroy(end);
+	free(end);
 }
-
-

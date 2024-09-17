@@ -6,8 +6,9 @@ SRC				= bitflags.c \
 				flag_functions.c \
 				ft_printf.c \
 				general_functions.c \
-				handle_escape.c \
-				string_precision.c
+				escape_parsing.c \
+				precision.c \
+				generators.c
 OBJ				= $(SRC:.c=.o)
 LIBFT_DIR		= libft
 LIBFT			= libft/libft.a

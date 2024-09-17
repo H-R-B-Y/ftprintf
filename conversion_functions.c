@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:36:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 17:20:30 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:47:18 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*int_to_str(int *v)
 	if (str[0] == '-')
 	{
 		tmp = ft_substr(str, 1, ft_strlen(str) - 1);
-		destroy(str);
+		free(str);
 		str = tmp;
 	}
 	return (str);
@@ -42,11 +42,11 @@ static size_t	digits_needed(unsigned long n, int base)
 	return (i);
 }
 
-char *uint_to_str(unsigned int *v)
+char	*uint_to_str(unsigned int *v)
 {
-	char	*str;
-	size_t	digits;
-	unsigned int num;
+	char			*str;
+	size_t			digits;
+	unsigned int	num;
 
 	if (!v)
 		return (ft_strdup(""));
@@ -64,7 +64,7 @@ char *uint_to_str(unsigned int *v)
 	return (str);
 }
 
-char	*uint_to_hex(unsigned *v)
+char	*uint_to_hex(unsigned int *v)
 {
 	char			*output;
 	unsigned long	num;

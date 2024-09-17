@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_escape.c                                    :+:      :+:    :+:   */
+/*   escape_parsing.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:25:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 20:06:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:48:00 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_conv	*parse_width(t_conv *c, va_list args)
 		substr_atoi(start, &c->min_width);
 	else
 		c->min_width = va_arg(args, int);
-	set_flag(c, len_f);
+	set_flag(&c->flags, len_f);
 	return (c);
 }
 
@@ -70,10 +70,50 @@ t_conv	*parse_precision(t_conv *c, va_list args)
 		start++;
 	if (!*start || *start != '.')
 		return (0);
-	set_flag(c, dot_f);
+	set_flag(&c->flags, dot_f);
 	if (*(++start) != '*')
 		substr_atoi(start, &c->precision);
 	else
 		c->precision = va_arg(args, int);
 	return (c);
+}
+
+void	*malloc_arg(va_list args, char s)
+{
+	int		*int_result;
+	char	*char_result;
+
+	if (s == 'd' || s == 'i' || s == 'x' || s == 'X')
+	{
+		int_result = malloc(sizeof(int));
+		*int_result = va_arg(args, int);
+		return (int_result);
+	}
+	else if (s == 'c')
+	{
+		char_result = malloc(1);
+		*char_result = va_arg(args, int);
+		return (char_result);
+	}
+	else if (s == 'u')
+	{
+		int_result = malloc(sizeof(unsigned int));
+		*int_result = va_arg(args, unsigned int);
+		return (int_result);
+	}
+	return (0);
+}
+
+void	*pop_args(va_list args, char s)
+{
+	if (!s)
+		return (0);
+	else if (s == 'p')
+		return (va_arg(args, void *));
+	else if (s == 's')
+		return (va_arg(args, char *));
+	else if (ft_strchr("cduixX", s))
+		return (malloc_arg(args, s));
+	else
+		return (0);
 }

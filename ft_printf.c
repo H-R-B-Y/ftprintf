@@ -6,119 +6,61 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 17:12:19 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 20:11:36 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:48:48 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// int	validate_input_str(const char *str)
-// {
-// 	while (*str)
-// 	{
-// 		if (*str == '%' && *(str + 1) != '%')
-// 		{
-// 			str++;
-// 			while (*str && ft_strchr("+ -0'#", *str))
-// 				str++;
-// 			if (*str && ft_strchr("123456789", *str))
-// 				while (*str && ft_strchr("1234567890", *str))
-// 					str++;
-// 			if (*str && *str == '*')
-// 				str++;
-// 			if (*str && *str == '.' && ++str)
-// 				while (*str && ft_strchr("1234567890", *str))
-// 					str++;
-// 			if (*str && *(str - 1) == '.' && *str == '*')
-// 				str++;
-// 			if (*str && !ft_strchr("cspdiuxX", *str))
-// 				return (0);
-// 		}
-// 		else if (*str == '%' && !*(str + 1))
-// 			return (0);
-// 		else if (*str == '%' && *(str + 1) == '%')
-// 			str++;
-// 		str++;
-// 	}
-// 	return (1);
-// }
-
-static void	*pop_arg(va_list args, char s)
+int	handle_escape(const char **str, va_list args, unsigned long long *len)
 {
-	int		*int_result;
-	char	*char_result;
-	
-	if (s == 'd' || s == 'i' || s == 'x' || s == 'X')
+	char	*esc;
+	void	*val;
+	t_conv	*conversion;
+
+	esc = pop_escaped_str((char **)str);
+	if (!esc)
+		return (-1);
+	val = pop_args(args, (char)*(*str - 1));
+	conversion = generate_conversion(esc, val);
+	if (!conversion)
+		return (-1);
+	set_conversion_flags(conversion);
+	parse_width(conversion, args);
+	parse_precision(conversion, args);
+	correct_flags(conversion);
+	generate_output(conversion);
+	if (conversion->type != '%')
 	{
-		int_result = malloc(sizeof(int));
-		*int_result = va_arg(args, int);
-		return (int_result);
+		set_padding(set_prefix(conversion));
 	}
-	else if (s == 'c')
-	{
-		char_result = malloc(1);
-		*char_result = va_arg(args, int);
-		return (char_result);
-	}
-	else if (s == 'p')
-		return (va_arg(args, void *));
-	else if (s == 's')
-		return (va_arg(args, char *));
-	else if (s == 'u')
-	{
-		int_result = malloc(sizeof(unsigned int));
-		*int_result = va_arg(args, unsigned int);
-		return (int_result);
-	}
+	print_conversion(conversion);
+	*len += printed_length(conversion);
+	delete_conversion(conversion);
 	return (0);
 }
 
-// IGNORE NORM HERE, EVENTUALLY CONVERT THIS TO SOME FORM OF BUFFERING??
 int	ft_printf(const char *str, ...)
 {
-	va_list	args;
-	t_conv	*conversion;
-	void	*val;
-	char	*esc;
-	unsigned long long len;
+	va_list				args;
+	unsigned long long	len;
 
-	// if (!validate_input_str(str))
-	// 	return (-1);
 	len = 0;
 	va_start(args, str);
 	while (*str)
 	{
-		if (*str == '%')
+		if (*str == '%' && !*(str + 1) && ++len)
 		{
-			if (!*(str + 1) && ++len)
-			{
-				ft_putchar_fd('%', 1);
-				str += 1;
-				continue ;
-			}
-			esc = pop_escaped_str((char **)&str);
-			if (!esc)
-				continue ;
-			val = pop_arg(args, (char)*(str-1));
-			conversion = generate_conversion(esc, val);
-			if (!conversion)
-				return (-1);
-			set_conversion_flags(conversion);
-			parse_width(conversion, args);
-			parse_precision(conversion, args);
-			correct_flags(conversion);
-			generate_output(conversion);
-			if (conversion->type != '%')
-			{
-				padding(set_prefix(conversion));
-			}
-			print_conversion(conversion);
-			len += printed_length(conversion);
-			delete_conversion(conversion);
+			ft_putchar_fd('%', 1);
+			str += 1;
 			continue ;
 		}
+		else if (*str == '%' && !handle_escape(&str, args, &len))
+			continue ;
 		else if (++len)
 			ft_putchar_fd(*str, 1);
+		else
+			return (-1);
 		str++;
 	}
 	va_end(args);

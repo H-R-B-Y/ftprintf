@@ -2,6 +2,11 @@
 .vscode/*
 *.o
 *.a
+quicktest.c
 quicktest
 testing
-testing/*s
+testing/*
+ignore/*
+ignore
+libft/*
+libft

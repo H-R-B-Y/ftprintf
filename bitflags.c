@@ -6,27 +6,67 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:05:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/11 15:09:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:45:58 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-// or operator, sets the flag, if flag already set do nothing
-void	set_flag(t_conv *c, t_escflags flag)
+void	set_flag(unsigned int *flags, t_escflags flag)
 {
-	c->flags |= flag;
+	*flags |= flag;
 }
 
-void	unset_flag(t_conv *c, t_escflags flag)
+void	unset_flag(unsigned int *flags, t_escflags flag)
 // this funtion does this...
 // flip bits to create bit mask, then and operate to unset
 {
-	c->flags &= ~(int)flag;
+	*flags &= ~(int)flag;
 }
 
 // if the and operator is equal to the test flag returns 1
-int	test_flag(t_conv *c, t_escflags flag)
+int	test_flag(unsigned int flags, t_escflags flag)
 {
-	return ((c->flags & flag) == flag);
+	return ((flags & flag) == flag);
+}
+
+t_conv	*set_conversion_flags(t_conv *c)
+{
+	char	*str_i;
+
+	if (!c || !(c->control))
+		return (0);
+	str_i = c->control;
+	while (*str_i && ft_strchr("+ -0'#", *str_i))
+	{
+		if (*str_i == '+')
+			set_flag(&c->flags, add_f);
+		else if (*str_i == ' ')
+			set_flag(&c->flags, spc_f);
+		else if (*str_i == '-')
+			set_flag(&c->flags, min_f);
+		else if (*str_i == '0')
+			set_flag(&c->flags, zro_f);
+		else if (*str_i == '\'')
+			set_flag(&c->flags, qot_f);
+		else if (*str_i == '#')
+			set_flag(&c->flags, hsh_f);
+		str_i++;
+	}
+	return (c);
+}
+
+t_conv	*correct_flags(t_conv *c)
+{
+	if (!c || !c->flags)
+		return (0);
+	if (test_flag(c->flags, zro_f) && test_flag(c->flags, dot_f))
+		unset_flag(&c->flags, zro_f);
+	if (test_flag(c->flags, add_f) && test_flag(c->flags, spc_f))
+		unset_flag(&c->flags, spc_f);
+	if (test_flag(c->flags, zro_f) && test_flag(c->flags, min_f))
+		unset_flag(&c->flags, zro_f);
+	if (!c->min_width)
+		unset_flag(&c->flags, zro_f);
+	return (c);
 }

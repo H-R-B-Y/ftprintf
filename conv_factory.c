@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:20:00 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/13 20:10:07 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/17 16:46:31 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,26 @@ t_conv	*generate_conversion(char *str, void *value)
 	return (output);
 }
 
-// Control, Output, and prefix all need to be free'd!
 void	delete_conversion(t_conv *c)
 {
 	if (!c)
 		return ;
-	// Value is not always a malloc'd value!
-	// This may need to be updated if anything else gets malloc'd
 	if (ft_strchr("dixXcu", c->type))
-		destroy(c->value);
+		free(c->value);
 	if (c->control)
-		destroy(c->control);
+		free(c->control);
 	if (c->output)
-		destroy(c->output);
+		free(c->output);
 	if (c->prefix)
-		destroy(c->prefix);
-	destroy(c);
+		free(c->prefix);
+	free(c);
 	return ;
 }
 
 size_t	printed_length(t_conv *c)
 {
 	size_t	output;
-	
+
 	output = ft_strlen(c->prefix) + ft_strlen(c->output);
 	if (c->type == 'c' && *(char *)c->value == '\0')
 		output += 1;
