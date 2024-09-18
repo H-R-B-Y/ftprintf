@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 16:11:55 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 19:02:01 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/18 13:05:28 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,5 +153,7 @@ t_conv	*parse_width(t_conv *c, va_list args);
 
 // Parses the precision from the escape sequence.
 t_conv	*parse_precision(t_conv *c, va_list args);
+
+void	*pop_args(va_list args, char s);
 
 #endif

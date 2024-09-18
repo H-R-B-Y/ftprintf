@@ -3,7 +3,7 @@ NAME			= libftprintf.a
 SRC				= bitflags.c \
 				conv_factory.c \
 				conversion_functions.c \
-				flag_functions.c \
+				prefix_padding.c \
 				ft_printf.c \
 				general_functions.c \
 				escape_parsing.c \
