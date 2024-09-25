@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 01:43:04 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 16:22:58 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:15:57 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,18 @@ void	to_upper_wrapper(unsigned int x, char *c)
 {
 	(void)x;
 	*c = ft_toupper(*c);
+}
+
+void	*zeroit(void *ptr, size_t n)
+{
+	size_t	index;
+
+	if (!ptr)
+		return (0);
+	index = 0;
+	while (index < n)
+		((unsigned char *) ptr)[index++] = (unsigned char ) '\0';
+	return (ptr);
 }
 
 char	*str_join_and_free(char *s1, char *s2, unsigned int flag)
@@ -41,18 +53,6 @@ char	*str_join_and_free(char *s1, char *s2, unsigned int flag)
 	if ((flag & (1 << 2)) == (1 << 2))
 		free(s2 - index);
 	return (output);
-}
-
-void	*zeroit(void *ptr, size_t n)
-{
-	size_t	index;
-
-	if (!ptr)
-		return (0);
-	index = 0;
-	while (index < n)
-		((unsigned char *) ptr)[index++] = (unsigned char ) '\0';
-	return (ptr);
 }
 
 char	*create_padding(t_conv *c)
@@ -81,10 +81,10 @@ void	substr_atoi(char *str, size_t *value)
 
 	if (!str || !value)
 		return ;
-	if (!ft_strchr("0123456789", *str))
+	if (!ft_isdigit(*str))
 		return ;
 	end = str;
-	while (*end && ft_strchr("0123456789", *end))
+	while (*end && ft_isdigit(*end))
 		end++;
 	end = ft_substr(str, 0, end - str);
 	*value = (size_t)atoi(end);

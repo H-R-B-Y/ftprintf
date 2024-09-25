@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:25:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 17:26:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:12:47 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ char	*pop_escaped_str(char **str)
 	char	*start;
 	char	*duplicate;
 
-	if (!str || **str != '%')
+	if (!str || !*str || **str != '%')
 		return (0);
 	start = *str;
 	(*str)++;
 	while (**str && ft_strchr("+ -0'#", **str))
 		(*str)++;
 	if (**str && ft_strchr("123456789", **str) && (*str)++)
-		while (**str && ft_strchr("0123456789", **str))
+		while (**str && ft_isdigit(**str))
 			(*str)++;
 	if (**str == '*')
 		(*str)++;
 	if (**str && **str == '.' && (*str)++)
-		while (**str && ft_strchr("0123456789", **str))
+		while (**str && ft_isdigit(**str))
 			(*str)++;
 	if (*((*str) - 1) == '.' && **str == '*')
 		(*str)++;
@@ -112,7 +112,8 @@ void	*pop_args(va_list args, char s)
 		return (va_arg(args, void *));
 	else if (s == 's')
 		return (va_arg(args, char *));
-	else if (ft_strchr("cduixX", s))
+	else if (s == 'c' || s == 'd' || s == 'u'
+		|| s == 'i' || s == 'x' || s == 'X')
 		return (malloc_arg(args, s));
 	else
 		return (0);

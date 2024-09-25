@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:42:27 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 18:17:00 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/23 18:53:23 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,7 @@ t_conv	*truncate_precision(t_conv *c)
 	if (!c->value && c->precision > 6)
 		return (c);
 	if (!c->value && c->precision < 6)
-	{
-		free(tmp);
-		c->output = ft_strdup("");
-		return (c);
-	}
+		return (free(tmp), c->output = ft_strdup(""), c);
 	c->output = ft_substr(c->output, 0, c->precision);
 	if (!c->output)
 		c->output = ft_strdup("");
@@ -42,11 +38,7 @@ t_conv	*prepend_precision(t_conv *c)
 	if (!c || !c->output || !test_flag(c->flags, dot_f))
 		return (0);
 	if (c->precision == 0 && ft_strchr("xXdui", c->type) && *c->output == '0')
-	{
-		free(c->output);
-		c->output = ft_strdup("");
-		return (c);
-	}
+		return (free(c->output), c->output = ft_strdup(""), c);
 	if ((ft_strlen(c->output) >= c->precision && c->type != 's')
 		|| (!c->value && 'p' == c->type)
 		|| (c->type == 's' && ft_strlen(c->output) < c->precision)

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 13:05:49 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 18:11:22 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 11:59:33 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,12 @@ t_conv	*set_conversion_flags(t_conv *c)
 	str_i = c->control;
 	while (*str_i && ft_strchr("+ -0'#", *str_i))
 	{
-		if (*str_i == '+')
-			set_flag(&c->flags, add_f);
-		else if (*str_i == ' ')
-			set_flag(&c->flags, spc_f);
-		else if (*str_i == '-')
-			set_flag(&c->flags, min_f);
-		else if (*str_i == '0')
-			set_flag(&c->flags, zro_f);
-		else if (*str_i == '\'')
-			set_flag(&c->flags, qot_f);
-		else if (*str_i == '#')
-			set_flag(&c->flags, hsh_f);
+		c->flags |= add_f * (*str_i == '+');
+		c->flags |= spc_f * (*str_i == ' ');
+		c->flags |= min_f * (*str_i == '-');
+		c->flags |= zro_f * (*str_i == '0');
+		c->flags |= qot_f * (*str_i == '\'');
+		c->flags |= hsh_f * (*str_i == '#');
 		str_i++;
 	}
 	return (c);

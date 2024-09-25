@@ -67,6 +67,7 @@ test:				quicktest
 		@$(TEST_DIR)/quicktest.out ft | cat -A > $(TEST_DIR)/ft_out
 		@$(TEST_DIR)/quicktest.out st | cat -A > $(TEST_DIR)/st_out
 		@diff $(TEST_DIR)/ft_out $(TEST_DIR)/st_out > $(TEST_DIR)/diff || exit 0
+		@-diff $(TEST_DIR)/st_out $(TEST_DIR)/ft_out > $(TEST_DIR)/diff2
 
 
 # Relink

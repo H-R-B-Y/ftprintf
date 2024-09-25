@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/17 16:15:32 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/17 16:19:20 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:16:19 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_conv	*generate_output(t_conv *c)
 		return (0);
 	else if (ft_strchr("dixXu", c->type))
 		numerics(c);
-	else if (ft_strchr("cs", c->type))
+	else if (c->type == 'c' || c->type == 's')
 		char_and_string(c);
 	else if (c->type == 'p')
 		c->output = ptr_to_hex(c->value);
