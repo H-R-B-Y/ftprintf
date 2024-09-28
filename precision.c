@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 15:42:27 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/23 18:53:23 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:29:29 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ t_conv	*prepend_precision(t_conv *c)
 		return (free(c->output), c->output = ft_strdup(""), c);
 	if ((ft_strlen(c->output) >= c->precision && c->type != 's')
 		|| (!c->value && 'p' == c->type)
-		|| (c->type == 's' && ft_strlen(c->output) < c->precision)
-	)
+		|| (c->type == 's' && ft_strlen(c->output) < c->precision))
 		return (c);
 	if (c->type == 's' && ft_strlen(c->output) > c->precision)
 		return (truncate_precision(c));

@@ -6,7 +6,7 @@
 /*   By: hbreeze <hbreeze@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:25:06 by hbreeze           #+#    #+#             */
-/*   Updated: 2024/09/25 12:12:47 by hbreeze          ###   ########.fr       */
+/*   Updated: 2024/09/25 12:32:51 by hbreeze          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,7 @@ char	*pop_escaped_str(char **str)
 	if (**str && !ft_strchr("cspdiuxX%", **str))
 		return (0);
 	duplicate = ft_substr(start, 1, (*str - start));
-	(*str)++;
-	return (duplicate);
+	return ((*str)++, duplicate);
 }
 
 t_conv	*parse_width(t_conv *c, va_list args)
